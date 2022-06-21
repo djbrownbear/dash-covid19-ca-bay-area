@@ -1,4 +1,4 @@
-python=3.8.13
+python==3.8.13
 dash==2.5.1
 dash-core-components==2.0.0
 dash-html-components==2.0.0
