@@ -31,14 +31,13 @@ df.index = df.index.normalize()
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = Dash(__name__, external_stylesheets=external_stylesheets)
-
-
+# create unique list of all counties, used in dropdown menu
 all_counties = tuple(df['County'].unique())
 all_counties = all_counties + ('All',)
 
+# create unique list of all cities, grouped by county, used in dropdown menu
 all_options = {}
 
 
