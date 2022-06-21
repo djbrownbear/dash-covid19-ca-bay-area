@@ -2,6 +2,8 @@
 from operator import index
 import pandas as pd
 import numpy as np
+import requests
+import io
 
 import os,time,re
 import shutil
@@ -11,9 +13,13 @@ from datetime import datetime as dt, timedelta
 import plotly.graph_objects as go
 from dash import Dash, Input, Output, dcc, html
 
-# select dataset
-data = 'https://github.com/djbrownbear/dash-covid19-ca-bay-area/blob/main/NumberCases.csv'
-df = pd.read_csv(data,index_col=0)
+# Fix: downloading the csv file from your GitHub account
+# Thanks to source: https://medium.com/towards-entrepreneurship/importing-a-csv-file-from-github-in-a-jupyter-notebook-e2c28e7e74a5
+url = 'https://raw.githubusercontent.com/djbrownbear/dash-covid19-ca-bay-area/main/NumberCases.csv'
+download = requests.get(url).content
+
+# Reading the downloaded content and turning it into a pandas dataframe
+df = pd.read_csv(io.StringIO(download.decode('utf-8')),index_col=0)
 
 # cleanup - convert date to datetime object
 df.index = pd.to_datetime(df.index)
