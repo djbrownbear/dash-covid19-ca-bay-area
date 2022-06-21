@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 from dash import Dash, Input, Output, dcc, html
 
 # select dataset
-data = '.\\NumberCases.csv'
+data = 'https://github.com/djbrownbear/dash-covid19-ca-bay-area/blob/main/NumberCases.csv'
 df = pd.read_csv(data,index_col=0)
 
 # cleanup - convert date to datetime object
