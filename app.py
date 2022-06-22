@@ -152,15 +152,22 @@ def update_figure(county_value, cities_value, date_type):
     for index, location in enumerate(filtered_df['Location'].unique()):
 
         graph_target = 'Cases Last 14 Days'
-        f = filtered_df.loc[filtered_df['Location']
-                            == location, [graph_target, 'Location']]
+        f = filtered_df.loc[filtered_df['Location']== location,
+                             [graph_target, 'Location']]
 
-        fig.add_trace(go.Scatter(
-            x=f.index,
-            y=f[graph_target].values,
-            name=location))
+        fig.add_trace(
+            go.Scatter(
+                x=f.index,
+                y=f[graph_target].values,
+                name=location
+            )
+        )
 
-    fig.update_layout()
+    fig.update_layout(
+        paper_bgcolor='#353333',
+        plot_bgcolor='#353333',
+        font_color='#ffffff',
+    )
 
     return fig
 
