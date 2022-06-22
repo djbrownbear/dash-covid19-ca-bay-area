@@ -1,0 +1,166 @@
+@import url(all.css);
+
+header {
+  text-align: center;
+}
+
+#app-container {
+  color: white;
+  background-color: rgba(18, 18, 18, 0.645);
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  /* align-content: stretch; */
+}
+
+#dropdown-menu-container {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+label {
+  text-align: center;
+  padding: 0.25em;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: rgba(54, 250, 40, 0.929);
+}
+
+#dropdown-menu-container>div#dropdown-counties #county-dropdown-options {
+  color: rgb(0, 0, 0);
+  padding: 1em;
+}
+
+#dropdown-menu-container>div#dropdown-cities #city-dropdown-options {
+  color: rgb(0, 0, 0);
+  padding: 1em;
+}
+
+#radio-buttons-time {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  color: rgb(0, 0, 0);
+}
+
+#graph-container {
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+}
+
+#graph-cases {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10%;
+}
+
+footer p {
+  display: flex;
+  /* font-size: 0.5em; */
+  font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: rgba(54, 250, 40, 0.929);
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  /* text-align: center; */
+}
+
+/* Icon */
+
+.icon {
+  text-decoration: none;
+  border-bottom: none;
+  position: relative;
+}
+
+.icon:before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  text-transform: none !important;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+}
+
+.icon>.label {
+  display: none;
+}
+
+.icon:before {
+  line-height: inherit;
+}
+
+.icon.solid:before {
+  font-weight: 900;
+}
+
+.icon.brands:before {
+  font-family: 'Font Awesome 5 Brands';
+  font-size: 3em;
+}
+
+.icon.major {
+  width: 2.5em;
+  height: 2.5em;
+  display: block;
+  background: #ffffff00;
+  border-radius: 100%;
+  color: #071108;
+  text-align: center;
+  line-height: 2.5em;
+  margin: 0 0 1.3em 0;
+}
+
+/* Icons */
+
+ul.icons {
+  cursor: default;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding-left: 1em;
+}
+
+ul.icons li {
+  display: inherit;
+  padding: 0 0.75em 0 0;
+}
+
+ul.icons li a {
+  padding: 0 0.25em 0 0.25em;
+  display: flex; 
+  align-items: center;
+  justify-content: stretch;
+  font-family: 'Font Awesome 5 Brands';
+  font-size: 2em;
+}
+
+ul.icons li:last-child {
+  padding-right: 0;
+}
+
+ul.icons li>a,
+ul.icons li>span {
+  border: 0;
+}
+
+ul.icons li>a .label,
+ul.icons li>span .label {
+  display: none;
+}

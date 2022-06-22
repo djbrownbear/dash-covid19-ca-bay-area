@@ -28,9 +28,9 @@ df.sort_index(inplace=True)
 # normalize date for graphing
 df.index = df.index.normalize()
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(__name__)
 server = app.server
 
 # create unique list of all counties, used in dropdown menu
@@ -52,42 +52,60 @@ max_date = df.index.max()
 last_30 = max_date-timedelta(days=30)
 ytd = dt(max_date.year, 1, 1)
 
-app.layout = html.Div([
+app.layout = html.Div(id='app-container',
+    children=[
     html.Header(html.H1('Covid-19 Case Tracker')),
 
-    html.Div([
-        html.Label('County'),
-        dcc.Dropdown(
-            options=[
-                dict(label=str(i), value=str(i).strip()) for i in all_counties
-            ],
-            value='All',
-            multi=False,
-            clearable=False,
-            id='county-dropdown-options',
-        )], style={'width': '24%', 'display': 'inline-block'}),
+    html.Div(id='dropdown-menu-container',
+        className='box-main',
+        children=[
+            html.Div(id='dropdown-counties',
+                children=[
+                    html.Label('County'),
+                    dcc.Dropdown(
+                        options=[
+                            dict(label=str(i), value=str(i).strip()) for i in all_counties
+                        ],
+                        value='All',
+                        multi=False,
+                        clearable=False,
+                        id='county-dropdown-options',
+                    )], style={'width': '24%', 'display': 'inline-block'}),
 
-    html.Div([
-        html.Label('Cities'),
-        dcc.Dropdown(
-            multi=True,
-            id='city-dropdown-options',
-        )], style={'width': '72%', 'display': 'inline-block'}),
+            html.Div(id='dropdown-cities',
+                children=[
+                    html.Label('Cities'),
+                    dcc.Dropdown(
+                        multi=True,
+                        id='city-dropdown-options',
+                    )], style={'width': '72%', 'display': 'inline-block'}),
+    ]),
 
-    html.Br(),
-
-    html.Div([
-        html.Br(),
-        html.Label('Filter by Time Period'),
-        dcc.RadioItems(
-            ['All', 'Last 30 Days', 'YTD'],
-            'All',
-            id='date-type',
-            inline=True,
-        )]),
-    dcc.Graph(id='graph-cases', figure=go.Figure({'layout': {'height': 720}})),
-], style={'columnCount': 1, 'padding': 10},
-)
+    html.Div(id='radio-buttons-time',
+        children=[
+            html.Label('Filter by Time Period'),
+            dcc.RadioItems(
+                ['All', 'Last 30 Days', 'YTD'],
+                'All',
+                id='date-type',
+                inline=True,
+            )
+    ]),
+    html.Div(
+        id='graph-container',
+        children=[
+            dcc.Graph(id='graph-cases', figure=go.Figure()),
+        ]),
+    html.Footer(
+        children=[
+            html.P(
+                html.A(
+                    href='https://github.com/djbrownbear/dash-covid19-ca-bay-area',
+                    className='icon brands fa-github',
+                    target='_blank')),
+            html.P("By Aaron Brown"),
+    ]),
+])
 
 
 @app.callback(Output('city-dropdown-options', 'options'),
@@ -134,15 +152,22 @@ def update_figure(county_value, cities_value, date_type):
     for index, location in enumerate(filtered_df['Location'].unique()):
 
         graph_target = 'Cases Last 14 Days'
-        f = filtered_df.loc[filtered_df['Location']
-                            == location, [graph_target, 'Location']]
+        f = filtered_df.loc[filtered_df['Location']== location,
+                             [graph_target, 'Location']]
 
-        fig.add_trace(go.Scatter(
-            x=f.index,
-            y=f[graph_target].values,
-            name=location))
+        fig.add_trace(
+            go.Scatter(
+                x=f.index,
+                y=f[graph_target].values,
+                name=location
+            )
+        )
 
-    fig.update_layout()
+    fig.update_layout(
+        paper_bgcolor='#353333',
+        plot_bgcolor='#353333',
+        font_color='#ffffff',
+    )
 
     return fig
 
