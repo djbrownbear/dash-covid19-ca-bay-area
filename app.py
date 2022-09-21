@@ -11,7 +11,6 @@ from datetime import datetime as dt, timedelta
 
 # graphing libraries & dependencies
 import plotly.graph_objects as go
-from jupyter_dash import JupyterDash
 from dash import Dash, Input, Output, dcc, html
 
 # Fix: downloading the csv file from your GitHub account
@@ -31,7 +30,7 @@ df.index = df.index.normalize()
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = JupyterDash(__name__)
+app = Dash(__name__)
 server = app.server
 
 # create unique list of all counties, used in dropdown menu
