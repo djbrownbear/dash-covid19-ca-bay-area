@@ -11,6 +11,7 @@ from datetime import datetime as dt, timedelta
 
 # graphing libraries & dependencies
 import plotly.graph_objects as go
+from jupyter_dash import JupyterDash
 from dash import Dash, Input, Output, dcc, html
 
 # Fix: downloading the csv file from your GitHub account
@@ -30,7 +31,7 @@ df.index = df.index.normalize()
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = Dash(__name__)
+app = JupyterDash(__name__)
 server = app.server
 
 # create unique list of all counties, used in dropdown menu
@@ -54,56 +55,59 @@ ytd = dt(max_date.year, 1, 1)
 
 app.layout = html.Div(id='app-container',
     children=[
-    html.Header(html.H1('Covid-19 Case Tracker')),
 
-    html.Div(id='dropdown-menu-container',
-        className='box-main',
-        children=[
-            html.Div(id='dropdown-counties',
-                children=[
-                    html.Label('County'),
-                    dcc.Dropdown(
-                        options=[
-                            dict(label=str(i), value=str(i).strip()) for i in all_counties
-                        ],
-                        value='All',
-                        multi=False,
-                        clearable=False,
-                        id='county-dropdown-options',
-                    )], style={'width': '24%', 'display': 'inline-block'}),
+    html.Div(id='page-container',
+    children=[
+        html.Header(html.H1('Covid-19 Case Tracker')),
 
-            html.Div(id='dropdown-cities',
-                children=[
-                    html.Label('Cities'),
-                    dcc.Dropdown(
-                        multi=True,
-                        id='city-dropdown-options',
-                    )], style={'width': '72%', 'display': 'inline-block'}),
-    ]),
+        html.Div(id='dropdown-menu-container',
+            className='box-main',
+            children=[
+                html.Div(id='dropdown-counties',
+                    children=[
+                        html.Label('County'),
+                        dcc.Dropdown(
+                            options=[
+                                dict(label=str(i), value=str(i).strip()) for i in all_counties
+                            ],
+                            value='All',
+                            multi=False,
+                            clearable=False,
+                            id='county-dropdown-options',
+                        )], style={'width': '100%', 'display': 'block'}),
 
-    html.Div(id='radio-buttons-time',
-        children=[
-            html.Label('Filter by Time Period'),
-            dcc.RadioItems(
-                ['All', 'Last 30 Days', 'YTD'],
-                'All',
-                id='date-type',
-                inline=True,
-            )
-    ]),
-    html.Div(
-        id='graph-container',
-        children=[
-            dcc.Graph(id='graph-cases', figure=go.Figure()),
+                html.Div(id='dropdown-cities',
+                    children=[
+                        html.Label('Cities'),
+                        dcc.Dropdown(
+                            multi=True,
+                            id='city-dropdown-options',
+                        )], style={'width': '100%', 'display': 'block'}),
         ]),
-    html.Footer(
-        children=[
-            html.P(
-                html.A(
-                    href='https://github.com/djbrownbear/dash-covid19-ca-bay-area',
-                    className='icon brands fa-github',
-                    target='_blank')),
-            html.P("By Aaron Brown"),
+
+        html.Div(id='radio-buttons-time',
+            children=[
+                html.Label('Filter by Time Period'),
+                dcc.RadioItems(
+                    ['All', 'Last 30 Days', 'YTD'],
+                    'All',
+                    id='date-type',
+                )
+        ]),
+        html.Div(
+            id='graph-container',
+            children=[
+                dcc.Graph(id='graph-cases', figure=go.Figure()),
+            ]),
+        html.Footer(
+            id="footer-visible",
+            children=[
+                html.P(
+                    html.A(
+                        href='https://github.com/djbrownbear/dash-covid19-ca-bay-area',
+                        className='icon brands fa-github',
+                        target='_blank')),
+        ]),
     ]),
 ])
 
@@ -128,6 +132,11 @@ def set_cities_options(available_options):
               Input('date-type', 'value')
               )
 def update_figure(county_value, cities_value, date_type):
+    has_dictionaries = any([type(el) == dict for el in cities_value])
+    if has_dictionaries:
+        cities_value = [v for d in cities_value for k,v in d.items()]
+    else:
+        pass
 
     # handle default for county selection, show all cities
     if len(list(cities_value)) == 0:
@@ -137,7 +146,7 @@ def update_figure(county_value, cities_value, date_type):
             d = df.loc[(df['County'] == county_value), :]
     else:
         d = df.loc[(df['Location']).isin(list(cities_value)), :]
-
+  
     # handle filter by time periods
     if date_type == 'Last 30 Days':
         filtered_df = d.loc[(d.index >= last_30) & (d.index <= max_date), :]
@@ -167,6 +176,7 @@ def update_figure(county_value, cities_value, date_type):
         paper_bgcolor='#353333',
         plot_bgcolor='#353333',
         font_color='#ffffff',
+        legend_orientation='h',
     )
 
     return fig
