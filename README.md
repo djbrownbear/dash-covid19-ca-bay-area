@@ -7,7 +7,7 @@
 2. HTML5 / CSS
 
 ## Background - TLDR
-The [dash-covid19-ca-bay-area](https://dash-covid19-ca-bay-area.herokuapp.com/) project was built out of curiosity to see the 14 day moving average of Covid-19 cases in nearby California cities. It was also a good way to maintain Python and web-development skills.
+The [dash-covid19-ca-bay-area](https://djbrownbear.pythonanywhere.com/) project was built out of curiosity to see the 14 day moving average of Covid-19 cases in nearby California cities. It was also a good way to maintain Python and web-development skills.
 I started this project as a Juypter notebook but have since deployed it as a dash app.
 
 ## More Background 
